@@ -1,0 +1,29 @@
+services:
+  postgres_server:
+    image: postgres:15-alpine
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: user_admin
+      POSTGRES_PASSWORD: secret_password
+      POSTGRES_DB: task_manager_db
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user_admin -d task_manager_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+  app:
+    build: .
+    container_name: spring_app
+    ports:
+      - "8081:8081"
+    environment:
+      # CAMBIO 1: Usa el puerto 5432 (interno de Docker) no el 5434
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_server:5432/task_manager_db
+      SPRING_DATASOURCE_USERNAME: user_admin
+      SPRING_DATASOURCE_PASSWORD: secret_password
+      APPLICATION_SECURITY_JWT_SECRET_KEY: "MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI="
+    depends_on:
+      postgres_server:
+        condition: service_healthy

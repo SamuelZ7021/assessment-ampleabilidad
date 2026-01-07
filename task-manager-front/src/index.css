@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* En v4, para usar @apply con colores base, ya están incluidos en el import anterior */
+body {
+  @apply bg-gray-50 text-gray-900;
+}
