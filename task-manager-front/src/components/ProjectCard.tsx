@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Project, Task as TaskType } from '../api/types';
+import { Project  } from '../api/types';
 import { useTasks } from '../hooks/useTasks';
 import { Plus, ChevronDown, ChevronUp, Layout, CheckCircle, ListTodo } from 'lucide-react';
 import { TaskItem } from './TaskItem';
